@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtoZ Cinemas - Master Code Generator</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0f19;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #131b2e;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+        }
+        h2 { font-size: 16px; margin-bottom: 12px; color: #f59e0b; text-align: center; }
+        .section-box {
+            background: #0b0f19;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            margin-bottom: 20px;
+        }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; font-size: 12px; margin-bottom: 4px; color: #94a3b8; }
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            background: #131b2e;
+            border: 1px solid #1e293b;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        button {
+            width: 100%;
+            background: #f59e0b;
+            color: #000;
+            border: none;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+        textarea {
+            width: 100%;
+            height: 110px;
+            background: #131b2e;
+            color: #10b981;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 8px;
+            margin-top: 8px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        hr { border: 0; border-top: 1px solid #1e293b; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>AtoZ Cinemas Code Generator</h2>
+
+        <!-- TOOL 1: Naya Section Banane ke liye -->
+        <div class="section-box">
+            <h2>1. Naya Section (Tab) Generator</h2>
+            <div class="form-group">
+                <label>Section Key (Chote shabdon mein, jaise: anime, sports):</label>
+                <input type="text" id="secKey" placeholder="anime">
+            </div>
+            <div class="form-group">
+                <label>Section Display Name (Jaise: Anime, Web Series):</label>
+                <input type="text" id="secName" placeholder="Anime">
+            </div>
+            <button onclick="generateSectionCode()">Section Code Generate Karein</button>
+            <textarea id="sectionOutput" readonly placeholder="Yahan naye section ka code aayega..."></textarea>
+        </div>
+
+        <hr>
+
+        <!-- TOOL 2: Movie/Show Item Add karne ke liye -->
+        <div class="section-box">
+            <h2>2. Content Item Generator</h2>
+            <div class="form-group">
+                <label>Item ID (Bada number taaki top par dikhe):</label>
+                <input type="number" id="itemId" value="10">
+            </div>
+            <div class="form-group">
+                <label>Title:</label>
+                <input type="text" id="itemTitle" placeholder="Movie ya Show ka naam">
+            </div>
+            kis section mein dalna hai:
+            <div class="form-group">
+                <label>Category (Jaise: movies, series, anime):</label>
+                <input type="text" id="itemCategory" placeholder="movies">
+            </div>
+            <div class="form-group">
+                <label>Release Year:</label>
+                <input type="text" id="itemYear" value="2026">
+            </div>
+            <div class="form-group">
+                <label>Badge Type:</label>
+                <select id="badgeType">
+                    <option value="movie">Movie</option>
+                    <option value="show">TV Show</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Season (Agar Show ho toh S01, warna khali):</label>
+                <input type="text" id="itemSeason" placeholder="S01">
+            </div>
+            <div class="form-group">
+                <label>Destination URL (Download Link):</label>
+                <input type="text" id="itemUrl" placeholder="https://...">
+            </div>
+            <button onclick="generateItemCode()">Item Code Generate Karein</button>
+            <textarea id="itemOutput" readonly placeholder="Yahan content item ka code aayega..."></textarea>
+        </div>
+
+    </div>
+
+    <script>
+        function generateSectionCode() {
+            let key = document.getElementById('secKey').value.trim().toLowerCase();
+            let name = document.getElementById('secName').value.trim();
+
+            if(!key || !name) {
+                alert("Kripya dono fields bharein!");
+                return;
+            }
+
+            let code = `--- 1. HTML Button (Nav Box ke andar jodein) ---
+<button class="tab" onclick="switchTab('${key}')">${name}</button>
+
+--- 2. JavaScript List (upar banayein) ---
+const ${key}List = [
+    { 
+        id: 1,
+        title: "Pahla Item ${name} ka", 
+        year: "2026", 
+        category: "${key}", 
+        badgeType: "movie", 
+        badgeText: "MOVIE", 
+        season: "", 
+        url: "https://example.com" 
+    }
+];
+
+--- 3. filterContent() function ke andar yeh condition jodein ---
+else if (currentTab === '${key}') {
+    combinedList = [...${key}List].sort((a, b) => b.id - a.id);
+}
+
+--- Aur Home tab ke combine list mein bhi ise jod dein ---
+// Home wale hisse mein:
+combinedList = [...moviesList, ...showsList, ...${key}List].sort((a, b) => b.id - a.id);
+
+--- Aur tabsOrder array mein iska key jodein ---
+const tabsOrder = ['home', 'movies', 'series', '${key}'];`;
+
+            document.getElementById('sectionOutput').value = code;
+        }
+
+        function generateItemCode() {
+            const id = document.getElementById('itemId').value;
+            const title = document.getElementById('itemTitle').value;
+            const year = document.getElementById('itemYear').value;
+            const category = document.getElementById('itemCategory').value;
+            const badgeType = document.getElementById('badgeType').value;
+            const badgeText = badgeType === 'movie' ? 'MOVIE' : 'TV SHOW';
+            const season = document.getElementById('itemSeason').value;
+            const url = document.getElementById('itemUrl').value;
+
+            const codeSnippet = `    { 
+        id: ${id},
+        title: "${title}", 
+        year: "${year}", 
+        category: "${category}", 
+        badgeType: "${badgeType}", 
+        badgeText: "${badgeText}", 
+        season: "${season}", 
+        url: "${url}" 
+    },`;
+
+            document.getElementById('itemOutput').value = codeSnippet;
+        }
+    </script>
+
+</body>
+</html>
