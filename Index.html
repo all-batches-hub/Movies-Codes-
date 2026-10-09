@@ -3,187 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AtoZ Cinemas - Master Code Generator</title>
+    <title>Sky4k Code generator</title>
     <style>
         * { box-sizing: border-box; }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0b0f19;
-            color: #fff;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: #131b2e;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #1e293b;
-        }
-        h2 { font-size: 16px; margin-bottom: 12px; color: #f59e0b; text-align: center; }
-        .section-box {
-            background: #0b0f19;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-            margin-bottom: 20px;
-        }
+        body { font-family: Arial, sans-serif; background-color: #0b0f19; color: #fff; padding: 15px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 500px; background: #131b2e; padding: 20px; border-radius: 12px; border: 1px solid #1e293b; }
+        h2 { font-size: 16px; margin-bottom: 15px; color: #f59e0b; text-align: center; }
+        .section-box, .content-box { background: #0b0f19; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; margin-bottom: 15px; }
+        h3 { font-size: 13px; color: #3b82f6; margin-bottom: 10px; }
         .form-group { margin-bottom: 10px; }
-        label { display: block; font-size: 12px; margin-bottom: 4px; color: #94a3b8; }
-        input, select {
-            width: 100%;
-            padding: 8px 10px;
-            background: #131b2e;
-            border: 1px solid #1e293b;
-            color: #fff;
-            border-radius: 6px;
-            font-size: 12px;
-        }
-        button {
-            width: 100%;
-            background: #f59e0b;
-            color: #000;
-            border: none;
-            padding: 10px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 8px;
-            font-size: 13px;
-        }
-        textarea {
-            width: 100%;
-            height: 110px;
-            background: #131b2e;
-            color: #10b981;
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 8px;
-            margin-top: 8px;
-            font-family: monospace;
-            font-size: 11px;
-        }
-        hr { border: 0; border-top: 1px solid #1e293b; margin: 20px 0; }
+        label { display: block; font-size: 11px; margin-bottom: 3px; color: #94a3b8; }
+        input, select { width: 100%; padding: 8px; background: #131b2e; border: 1px solid #1e293b; color: #fff; border-radius: 6px; font-size: 12px; }
+        button { width: 100%; background: #f59e0b; color: #000; border: none; padding: 9px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 8px; font-size: 12px; }
+        textarea { width: 100%; height: 90px; background: #131b2e; color: #10b981; border: 1px solid #1e293b; border-radius: 6px; padding: 6px; margin-top: 8px; font-family: monospace; font-size: 11px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>AtoZ Cinemas Code Generator</h2>
+        <h2>Sky4k Code Generator</h2>
+        
+        <!-- 1. Content Code Generator -->
+        <div class="content-box">
+            <h3>1. Movie / Series Content Code Generator</h3>
+            <div class="form-group">
+                <label>Content Number</label>
+                <input type="number" id="itemId" value="#">
+            </div>
+            <div class="form-group">
+                <label>Title {Movie/Series}</label>
+                <input type="text" id="itemTitle" placeholder="Ex: Pushpa The Rise">
+            </div>
+            
+            <div class="form-group">
+                <label>Release Year</label>
+                <select id="itemYearSelect" onchange="checkCustomYear()">
+                    <option value="2026" selected>2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="custom">Custom Year</option>
+                </select>
+            </div>
 
-        <!-- TOOL 1: Naya Section Banane ke liye -->
-        <div class="section-box">
-            <h2>1. Naya Section (Tab) Generator</h2>
-            <div class="form-group">
-                <label>Section Key (Chote shabdon mein, jaise: anime, sports):</label>
-                <input type="text" id="secKey" placeholder="anime">
+            <!-- Custom Year Input Box -->
+            <div class="form-group hidden" id="customYearGroup">
+                <label>Customize Year</label>
+                <input type="text" id="customYearInput" placeholder="Ex: 2027 or 19..">
             </div>
-            <div class="form-group">
-                <label>Section Display Name (Jaise: Anime, Web Series):</label>
-                <input type="text" id="secName" placeholder="Anime">
-            </div>
-            <button onclick="generateSectionCode()">Section Code Generate Karein</button>
-            <textarea id="sectionOutput" readonly placeholder="Yahan naye section ka code aayega..."></textarea>
-        </div>
 
-        <hr>
 
-        <!-- TOOL 2: Movie/Show Item Add karne ke liye -->
-        <div class="section-box">
-            <h2>2. Content Item Generator</h2>
+
+
+
+
             <div class="form-group">
-                <label>Item ID (Bada number taaki top par dikhe):</label>
-                <input type="number" id="itemId" value="10">
+                <label>CATEGORIES</label>
+                <select id="itemCategory">
+                    <option value="movies">Movies</option>
+                    <option value="series">Series</option>
+                    <option value="anime">Anime</option>
+                    <option value="tv show">Show</option>
+                </select>
+                
+                
+                
             </div>
             <div class="form-group">
-                <label>Title:</label>
-                <input type="text" id="itemTitle" placeholder="Movie ya Show ka naam">
-            </div>
-            kis section mein dalna hai:
-            <div class="form-group">
-                <label>Category (Jaise: movies, series, anime):</label>
-                <input type="text" id="itemCategory" placeholder="movies">
-            </div>
-            <div class="form-group">
-                <label>Release Year:</label>
-                <input type="text" id="itemYear" value="2026">
-            </div>
-            <div class="form-group">
-                <label>Badge Type:</label>
+                <label>Badge Type</label>
                 <select id="badgeType">
                     <option value="movie">Movie</option>
                     <option value="show">TV Show</option>
                 </select>
+                
+                
+                
             </div>
             <div class="form-group">
-                <label>Season (Agar Show ho toh S01, warna khali):</label>
-                <input type="text" id="itemSeason" placeholder="S01">
+                <label>Part or Season</label>
+                <input type="text" id="itemSeason" placeholder="Part-01/S-01">
             </div>
             <div class="form-group">
-                <label>Destination URL (Download Link):</label>
+                <label>Poster Image URL</label>
+                <input type="text" id="itemPoster" placeholder="https://...jpg / .png / .webp">
+            </div>
+            <div class="form-group">
+                <label>PAGE URL </label>
                 <input type="text" id="itemUrl" placeholder="https://...">
             </div>
-            <button onclick="generateItemCode()">Item Code Generate Karein</button>
-            <textarea id="itemOutput" readonly placeholder="Yahan content item ka code aayega..."></textarea>
+            <button onclick="generateContentCode()">Generate Code</button>
+            <textarea id="outputContentCode" readonly placeholder="Content code will be available here."></textarea>
+            <button id="copyContentBtn" onclick="copyContentCode()" style="background:#10b981; color:#fff;">Copy Code</button>
         </div>
 
+        <!-- 2. Section Code Generator -->
+        <div class="section-box">
+            <h3>2. New Section Tab Code</h3>
+            <div class="form-group">
+                <label>Catagories</label>
+                <input type="text" id="sectionInput" placeholder="anime">
+            </div>
+            <button onclick="generateSectionCode()" style="background:#3b82f6; color:#fff;">Create Code</button>
+            <textarea id="outputSectionCode" readonly placeholder="Category code will be available here."></textarea>
+        </div>
     </div>
+    
+    
+    
 
     <script>
-        function generateSectionCode() {
-            let key = document.getElementById('secKey').value.trim().toLowerCase();
-            let name = document.getElementById('secName').value.trim();
-
-            if(!key || !name) {
-                alert("Kripya dono fields bharein!");
-                return;
+        function checkCustomYear() {
+            const selectVal = document.getElementById('itemYearSelect').value;
+            const customGroup = document.getElementById('customYearGroup');
+            if (selectVal === 'custom') {
+                customGroup.classList.remove('hidden');
+            } else {
+                customGroup.classList.add('hidden');
             }
-
-            let code = `--- 1. HTML Button (Nav Box ke andar jodein) ---
-<button class="tab" onclick="switchTab('${key}')">${name}</button>
-
---- 2. JavaScript List (upar banayein) ---
-const ${key}List = [
-    { 
-        id: 1,
-        title: "Pahla Item ${name} ka", 
-        year: "2026", 
-        category: "${key}", 
-        badgeType: "movie", 
-        badgeText: "MOVIE", 
-        season: "", 
-        url: "https://example.com" 
-    }
-];
-
---- 3. filterContent() function ke andar yeh condition jodein ---
-else if (currentTab === '${key}') {
-    combinedList = [...${key}List].sort((a, b) => b.id - a.id);
-}
-
---- Aur Home tab ke combine list mein bhi ise jod dein ---
-// Home wale hisse mein:
-combinedList = [...moviesList, ...showsList, ...${key}List].sort((a, b) => b.id - a.id);
-
---- Aur tabsOrder array mein iska key jodein ---
-const tabsOrder = ['home', 'movies', 'series', '${key}'];`;
-
-            document.getElementById('sectionOutput').value = code;
         }
 
-        function generateItemCode() {
+        function generateContentCode() {
             const id = document.getElementById('itemId').value;
             const title = document.getElementById('itemTitle').value;
-            const year = document.getElementById('itemYear').value;
+            
+            let year = document.getElementById('itemYearSelect').value;
+            if (year === 'custom') {
+                year = document.getElementById('customYearInput').value.trim();
+                if (!year) {
+                    alert("Kripya Custom Year type karein!");
+                    return;
+                }
+            }
+
             const category = document.getElementById('itemCategory').value;
             const badgeType = document.getElementById('badgeType').value;
             const badgeText = badgeType === 'movie' ? 'MOVIE' : 'TV SHOW';
             const season = document.getElementById('itemSeason').value;
+            const poster = document.getElementById('itemPoster').value.trim();
             const url = document.getElementById('itemUrl').value;
 
-            const codeSnippet = `    { 
+            if(!title) { alert(" Please complete the entire process, First."); return; }
+
+            const code = `    { 
         id: ${id},
         title: "${title}", 
         year: "${year}", 
@@ -191,12 +153,44 @@ const tabsOrder = ['home', 'movies', 'series', '${key}'];`;
         badgeType: "${badgeType}", 
         badgeText: "${badgeText}", 
         season: "${season}", 
+        poster: "${poster}", 
         url: "${url}" 
     },`;
+            document.getElementById('outputContentCode').value = code;
+        }
 
-            document.getElementById('itemOutput').value = codeSnippet;
+        async function copyContentCode() {
+            const output = document.getElementById('outputContentCode');
+            const btn = document.getElementById('copyContentBtn');
+            const code = output.value.trim();
+            if (!code) { alert("Nothing Is Here Now, 📌First, you need to create the code."); return; }
+            try { await navigator.clipboard.writeText(code); }
+            catch (err) { output.focus(); output.select(); document.execCommand('copy'); }
+            const oldText = btn.innerHTML;
+            btn.innerHTML = "✔️Copied";
+            setTimeout(() => { btn.innerHTML = oldText; }, 1500);
+        }
+
+        function generateSectionCode() {
+            let sec = document.getElementById('sectionInput').value.trim().toLowerCase();
+            if(!sec) { alert("Please complete the entire process, First."); return; }
+            let capitalized = sec.charAt(0).toUpperCase() + sec.slice(1);
+
+            let code = `// 1. Isse index.html ke 'tabsOrder' mein jodein:
+// tabsOrder = ['home', 'movies', 'series', '${sec}'];
+
+// 2. Isse index.html ke top nav buttons mein jodein:
+<button class="tab" onclick="switchTab('${sec}')">${capitalized}</button>
+
+// 3. Nayi list variable banayein script ke andar:
+const ${sec}List = [];
+
+// 4. filterContent() function mein yeh condition jodein:
+else if (currentTab === '${sec}') {
+    combinedList = [...${sec}List].sort((a, b) => b.id - a.id);
+}`;
+            document.getElementById('outputSectionCode').value = code;
         }
     </script>
-
 </body>
 </html>
